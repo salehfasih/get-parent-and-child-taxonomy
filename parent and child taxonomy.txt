@@ -1,0 +1,30 @@
+function display_taxonomy($atts){
+
+  // $output .= print_r($atts);
+$output .='<div class="container"><div class="row"><div class="col-md-4">';
+    foreach( get_terms( 'Ads-Type', array( 'hide_empty' => false, 'parent' => 0 ) ) as $parent_term ) {
+
+        if($parent_term->term_id ==$atts[0]){
+        $term_link = get_term_link( $parent_term, 'Ads-Type' );
+            
+  // display top level term name
+ $output .=   '<h2  class="parent_heading"><a href="'.$term_link.'">' .$parent_term->name .'</a></h2>';
+}
+
+
+if($parent_term->term_id == $atts[0]){
+  foreach( get_terms( 'Ads-Type', array( 'hide_empty' => false, 'parent' => $parent_term->term_id ) ) as $child_term ) {
+
+    $term_link = get_term_link( $child_term, 'Ads-Type' );
+    // display name of all childs of the parent term
+ $output .= '<a href="'.$term_link.'" class=child_content">' .$child_term->name . '</a><br>';
+    
+  }
+}
+
+}
+$output .=  '</div></div></div>';
+    echo $output;
+}
+
+add_shortcode('display_taxonomy','display_taxonomy');
